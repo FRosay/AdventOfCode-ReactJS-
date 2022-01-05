@@ -1014,14 +1014,17 @@ export default function dayTwo(props) {
   100011101011`;
 
   input = input.split('\n').map(String);
+  for (let i = 0; i < input.length; i++) {
+    input[i] = input[i].trim();
+  }
 
   let result = 0;
-  let binaryLength = input[0].trim().length;
+  let binaryLength = input[0].length;
   let elem = '';
+  let zeros = 0;
+  let ones = 0;
 
   if (props === 1) {
-    let zeros = 0;
-    let ones = 0;
     let gamma = '';
     let epsilon = '';
     for (let y = 0; y < binaryLength; y++) {
@@ -1037,17 +1040,39 @@ export default function dayTwo(props) {
     }
     result = parseInt(gamma, 2) * parseInt(epsilon, 2);
   } else if (props === 2) {
-    let oxygenGeneratorRating = 0;
-    let co2ScrubberRating = 0;
-    
-    console.log(input.length);
+    let oxygenGeneratorRating = '';
+    let co2ScrubberRating = '';
+    let tempInput = input;
 
+    console.log(tempInput);
     for (let y = 0; y < binaryLength; y++) {
-      for (let i = 0; i < input.length; i++) {
-
+      zeros = 0;
+      ones = 0;
+      tempInput = input;
+      for (let i = 0; i < tempInput.length; i++) {
+        elem = tempInput[i].trim();
+        console.log(elem);
+        elem.charAt(y) === '0' ? zeros++ : ones++;
+      }
+      console.log(zeros);
+      console.log(ones);
+      console.log('---');
+      for (let e = 0; e < tempInput.length; e++) {
+        if (tempInput[e].charAt(y) === '1' && zeros > ones) {
+          tempInput.splice(e, 1);
+          e--;
+        } else if (tempInput[e].charAt(y) === '0' && ones > zeros) {
+          tempInput.splice(e, 1);
+          e--;
+        }
+        if (tempInput.length === 1) {
+          console.log(tempInput);
+          oxygenGeneratorRating = tempInput[0];
+          break;
+        }
       }
     }
-
+    console.log(oxygenGeneratorRating);
     result = oxygenGeneratorRating * co2ScrubberRating;
   }
 
